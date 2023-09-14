@@ -65,7 +65,8 @@ app.post("/register", upload.single("file"), async (req, res) => {
     db.collection("users").add(userData);
     res.send("added sucessfully");
   } catch (error) {
-    res.send(error);
+    console.error(error);
+    res.status(400).send("Bad Request: " + error.message);
   }
 });
 
