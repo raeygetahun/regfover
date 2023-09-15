@@ -8,7 +8,7 @@ const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
 require("dotenv").config();
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8070;
 const app = express();
 
 // app.use(cors());
@@ -63,10 +63,20 @@ app.post("/register", upload.single("file"), async (req, res) => {
     };
 
     db.collection("users").add(userData);
-    res.send("added sucessfully");
+    res.sendFile(path.join(__dirname, "thankyou.html"));
   } catch (error) {
-    console.error(error);
-    res.status(400).send("Bad Request: " + error.message);
+    const responseHtml = `
+    <html>
+      <head>
+        <script>
+          alert("Please try again!");
+        </script>
+      </head>
+      <body></body>
+    </html>
+  `;
+    // console.error(error);
+    res.status(400).send(responseHtml);
   }
 });
 
