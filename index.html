@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Hackathon Registration Form</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <h2>Hackathon Registration Form</h2>
+    <form action="http://localhost:8080/register" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+
+        <label for="full_name">Full Name:</label>
+        <input type="text" id="full_name" name="full_name" required value="hello@gmail.com"><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required value="hello@gmail.com"><br><br>
+
+        <label for="pronouns">Pronouns:</label>
+        <input type="text" id="pronouns" name="pronouns"><br><br>
+
+        <label for="constructor">Are you currently studying at Constructor?</label>
+        <input type="radio" id="constructor_yes" name="constructor" value="Yes" required> Yes
+        <input type="radio" id="constructor_no" name="constructor" value="No" required> No<br><br>
+
+        <div id="constructor_info" style="display:none;">
+            <label for="major">Major:</label>
+            <input type="text" id="major" name="major" required value="hello@gmail.com"><br><br>
+
+            <label for="minor">Minor:</label>
+            <input type="text" id="minor" name="minor" required value="hello@gmail.com"><br><br>
+
+            <label for="graduation_year">Year of Graduation:</label>
+            <input type="text" id="graduation_year" name="graduation_year" required value="hello@gmail.com"><br><br>
+        </div>
+
+
+        <div id="other_info" style="display:none;">
+            <label for="school">Where do you study?</label>
+            <input type="text" id="school" name="school" required value="hello@gmail.com"><br><br>
+
+            <label for="diploma">Diploma/Degree:</label>
+            <input type="text" id="diploma" name="diploma" required value="hello@gmail.com"><br><br>
+
+            <label for="graduation_year_other">Year of Graduation:</label>
+            <input type="text" id="graduation_year_other" name="graduation_year_other" required value="hello@gmail.com"><br><br>
+        </div>
+
+        <label for="linkedin">LinkedIn Profile:</label>
+        <input type="url" id="linkedin" name="linkedin" value="https://www.geeksforgeeks.org/how-to-upload-pdf-files-in-firebase-storage-in-android/"><br><br>
+
+        <label for="file">Upload your CV (PDF only, max 250KB):</label>
+        <input type="file" id="cv" name="file" accept=".pdf" ><br>
+        <small id="cvError" style="color: red;"></small><br><br>
+
+        <label for="dietary_restrictions">Dietary Restrictions:</label>
+        <input type="text" id="dietary_restrictions" name="dietary_restrictions" required value="hello@gmail.com"><br><br>
+
+        <label for="reason_to_participate">Why do you want to participate in this year's hackathon?</label>
+        <textarea id="reason_to_participate" name="reason_to_participate" rows="4" required value="hello@gmail.com"></textarea><br><br>
+
+        <label for="team_preference">Team Preference:</label>
+        <input type="radio" id="team_preference_existing" name="team_preference" value="Join Existing Team" required>
+        Join Existing Team
+        <input type="radio" id="team_preference_new" name="team_preference" value="Form a New Team" required> Form a New
+        Team<br><br>
+
+        <label for="suggestions_questions">Any suggestions or questions about/for the event?</label>
+        <textarea id="suggestions_questions" name="suggestions_questions" rows="4" required value="hello@gmail.com"></textarea><br><br>
+
+        <input type="submit" value="Submit">
+
+    </form>
+
+    <script>
+        function validateForm() {
+            const cvInput = document.getElementById('cv');
+            const cvError = document.getElementById('cvError');
+
+            if (cvInput.files.length === 0) {
+                cvError.textContent = 'Please select a CV file.';
+                return false;
+            }
+
+            const maxFileSize = 250 * 1024; 
+            const fileSize = cvInput.files[0].size;
+
+            if (fileSize > maxFileSize) {
+                cvError.textContent = 'CV file size exceeds the limit (250KB).';
+                return false;
+            }
+
+            cvError.textContent = ''; 
+            return true;
+        }
+        const constructorYes = document.getElementById('constructor_yes');
+        const constructorNo = document.getElementById('constructor_no');
+        const constructorInfo = document.getElementById('constructor_info');
+        const otherInfo = document.getElementById('other_info');
+
+        constructorYes.addEventListener('change', function () {
+            constructorInfo.style.display = 'block';
+            otherInfo.style.display = 'none';
+            document.getElementById('school').value = 'NA';
+            document.getElementById('diploma').value = 'NA';
+            document.getElementById('graduation_year_other').value = 'NA';
+        });
+
+        constructorNo.addEventListener('change', function () {
+            constructorInfo.style.display = 'none';
+            otherInfo.style.display = 'block';
+            document.getElementById('school').value = '';
+            document.getElementById('diploma').value = '';
+            document.getElementById('graduation_year_other').value = '';
+        });
+    </script>
+</body>
+
+</html>
