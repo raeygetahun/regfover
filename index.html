@@ -10,19 +10,77 @@
 
 <body>
     <h2>Hackathon Registration Form</h2>
-    <form action="https://constructorhackapi.onrender.com/register" method="post" enctype="multipart/form-data"
-        onsubmit="return validateForm()">
+    <form action="https://constructorhackapi.onrender.com/register" method="post" enctype="multipart/form-data">
 
-        <label class="required" for="full_name">Full Name:</label>
-        <input type="text" id="full_name" name="full_name" required><br><br>
+        <label class="required" for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" required><br><br>
+
+        <label class="required" for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" required><br><br>
+
+        <label class="required" for="age">Age:</label>
+        <select id="age" name="age">
+            <option value="<16">below 16</option>
+            <option value="16-18">16-18</option>
+            <option value="19-22">19-22</option>
+            <option value="22-25">22-25</option>
+            <option value="25-30">25-30</option>
+            <option value=">30">above 30</option>
+        </select><br><br>
 
         <label class="required" for="email">Email:</label>
         <input type="email" id="email" name="email" required><br><br>
 
-        <label for="pronouns">Pronouns:</label>
-        <input type="text" id="pronouns" name="pronouns"><br><br>
+        <label class="required" for="phoneNumber">Phone Number:</label>
+        <input type="tel" id="phoneNumber" name="phoneNumber" required><br><br>
 
-        <label class="required" for="constructor">Are you currently studying at Constructor?</label>
+        <!-- <label class="required" for="university">University:</label>
+        <input type="text" id="university" name="university"><br><br> -->
+
+        <label class="required" for="university">University:</label>
+        <select id="university" name="university" required>
+            <option value="AFG">Select Your University</option>
+        </select><br><br>
+
+        <label class="required" for="country">Country of Residence:</label>
+        <select id="country" name="country" required>
+            <option>Select Your Residence</option>
+        </select>
+        </select><br><br>
+
+
+
+        <label class="required" for="level_of_study">Level of Study:</label>
+        <select id="level_of_study" name="level_of_study">
+            <option value="Less than Secondary / High School">Less than Secondary / High School</option>
+            <option value="Secondary / High School">Secondary / High School</option>
+            <option value="Undergraduate University (2 year)">Undergraduate University (2 year)</option>
+            <option value="Undergraduate University (3+ year)">Undergraduate University (3+ year)</option>
+            <option value="Graduate University (Masters, Professional, Doctoral, etc)">Graduate University (Masters,
+                Professional, Doctoral, etc)</option>
+            <option value="Code School / Bootcamp">Code School / Bootcamp</option>
+            <option value="Other Vocational / Trade Program or Apprenticeship">Other Vocational / Trade Program or
+                Apprenticeship</option>
+            <option value="Post Doctorate">Post Doctorate</option>
+            <option value="Other">Other</option>
+            <option value="Not currently a student">Not currently a student</option>
+            <option value="Prefer not to answer">Prefer not to answer</option>
+        </select><br><br>
+
+
+        <input type="checkbox" id="code_of_conduct" name="code_of_conduct" required>
+        <label class="required" for="code_of_conduct">I have read and agree to the MLH Code of Conduct</label><br><br>
+
+        <input type="checkbox" id="data_sharing" name="data_sharing" required>
+        <label class="required" for="data_sharing">I authorize you to share my application/registration information with
+            Major League Hacking</label><br><br>
+
+        <input type="checkbox" id="mlh_emails" name="mlh_emails">
+        <label for="mlh_emails">I authorize MLH to send me occasional emails about relevant events, career
+            opportunities, and community announcements</label><br><br>
+
+
+        <!-- <label class="required" for="constructor">Are you currently studying at Constructor?</label>
         <input type="radio" id="constructor_yes" name="constructor" value="Yes" required> Yes
         <input type="radio" id="constructor_no" name="constructor" value="No" required> No<br><br>
 
@@ -67,9 +125,9 @@
         <input type="radio" id="team_preference_existing" name="team_preference" required>
         Join Existing Team
         <input type="radio" id="team_preference_new" name="team_preference" required> Form a New
-        Team<br><br>
+        Team<br><br> -->
 
-        <label class="required" for="suggestions_questions">Any suggestions or questions about/for the event?</label>
+        <label for="suggestions_questions">Any suggestions or questions about/for the event?</label>
         <textarea id="suggestions_questions" name="suggestions_questions" rows="4" required></textarea><br><br>
 
         <input type="submit" value="Submit">
@@ -77,46 +135,38 @@
     </form>
 
     <script>
-        function validateForm() {
-            const cvInput = document.getElementById('cv');
-            const cvError = document.getElementById('cvError');
 
-            if (cvInput.files.length === 0) {
-                cvError.textContent = 'Please select a CV file.';
-                return false;
-            }
+        fetch('uniList.txt')
+            .then(response => response.text())
+            .then(data => {
+                const universities = data.split('\n');
+                const universityDropdown = document.getElementById('university');
+                universities.forEach(university => {
+                    const option = document.createElement('option');
+                    option.value = university.trim();
+                    option.textContent = university.trim();
+                    universityDropdown.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching universities:', error);
+            });
 
-            const maxFileSize = 250 * 1024;
-            const fileSize = cvInput.files[0].size;
-
-            if (fileSize > maxFileSize) {
-                cvError.textContent = 'CV file size exceeds the limit (250KB).';
-                return false;
-            }
-
-            cvError.textContent = '';
-            return true;
-        }
-        const constructorYes = document.getElementById('constructor_yes');
-        const constructorNo = document.getElementById('constructor_no');
-        const constructorInfo = document.getElementById('constructor_info');
-        const otherInfo = document.getElementById('other_info');
-
-        constructorYes.addEventListener('change', function () {
-            constructorInfo.style.display = 'block';
-            otherInfo.style.display = 'none';
-            document.getElementById('school').value = 'NA';
-            document.getElementById('diploma').value = 'NA';
-            document.getElementById('graduation_year_other').value = 'NA';
-        });
-
-        constructorNo.addEventListener('change', function () {
-            constructorInfo.style.display = 'none';
-            otherInfo.style.display = 'block';
-            document.getElementById('school').value = '';
-            document.getElementById('diploma').value = '';
-            document.getElementById('graduation_year_other').value = '';
-        });
+        fetch('conList.txt')
+            .then(response => response.text())
+            .then(data => {
+                const countries = data.split('\n');
+                const universityDropdown = document.getElementById('country');
+                countries.forEach(university => {
+                    const option = document.createElement('option');
+                    option.value = university.trim();
+                    option.textContent = university.trim();
+                    universityDropdown.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching universities:', error);
+            });
     </script>
 </body>
 
